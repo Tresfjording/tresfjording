@@ -67,4 +67,5 @@ function formatTid(isoTid) {
     minute: "2-digit"
   });
 }
+window.hentNowcast = hentNowcast;
 
