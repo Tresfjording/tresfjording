@@ -1,5 +1,5 @@
 // nowcast.js – enkel værmodul for MET Nowcast 2.0
-export async function hentNowcast(lat, lon, visningsNodeId = "vaermelding") {
+async function hentNowcast(lat, lon, visningsNodeId = "vaermelding") {
   const url = `https://api.met.no/weatherapi/nowcast/2.0/complete.json?lat=${lat}&lon=${lon}`;
   const headers = {
     "User-Agent": "selsomt.no (kontakt@din-epost.no)"
