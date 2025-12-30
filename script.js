@@ -350,13 +350,9 @@ async function visTettsted(map) {
 // --------------------------
 // Init
 // --------------------------
-document.addEventListener("DOMContentLoaded", async () => {
-  map = L.map("map").setView([62.566, 7.0], 7);
 
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 18,
-    attribution: "&copy; OpenStreetMap-bidragsytere"
-  }).addTo(map);
+ document.addEventListener("DOMContentLoaded", async () => {
+  map = L.map("map").setView([62.566, 7.0], 7);
 
   // Last lokal tettstedsliste
   await lastTettsteder();
