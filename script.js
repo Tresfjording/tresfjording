@@ -1,5 +1,4 @@
-Ren versjon fra Copilot
-
+// ren versjon fra før migrasjonen
 // --------------------------
 // HOVEDFUNKSJON: VIS TETTSTED / STED
 // --------------------------
@@ -199,7 +198,8 @@ async function visTettsted(map) {
 }// script.js – selsomt.no (modul-versjon)
 
 // Importer værmodulen
-import { hentNowcast } from "./nowcast.js";
+//import { hentNowcast } from "./nowcast.js";
+// hentNowcast er global fra nowcast.js
 
 // --------------------------
 // Globale variabler
