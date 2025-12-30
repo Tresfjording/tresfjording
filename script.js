@@ -1,4 +1,4 @@
-// ren versjon fra før migrasjonen
+// ren fra før migrasjonen
 // --------------------------
 // HOVEDFUNKSJON: VIS TETTSTED / STED
 // --------------------------
