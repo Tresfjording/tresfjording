@@ -377,6 +377,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   settStatus("Skriv inn et tettsted for å starte.", true);
 });
-
   const tettstedEl = document.getElementById("tettstedDisplay");
   const prisEl = document.getElementById("prisDisplay");
