@@ -12,6 +12,11 @@ let map;
 let steder = [];              // alle tettsteder fra lokal fil
 let kommuneTilSone = {};      // k_nr -> sone (prisområde)
 
+const tettstedEl = document.getElementById("tettstedDisplay");
+const prisEl = document.getElementById("prisDisplay");
+const kNrEl = document.getElementById("kNrDisplay");
+const fylkeEl = document.getElementById("fylkeDisplay");
+
 // --------------------------
 // Hjelpefunksjoner
 // --------------------------
