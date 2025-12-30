@@ -50,6 +50,7 @@ function settStatus(tekst, ok = true) {
     }
  }
   if (tettstedEl) tettstedEl.textContent = entry.tettsted || "–";
+  if (tettstedEl2) tettstedEl2.textContent = entry.tettsted || "–";
   if (kNrEl) kNrEl.textContent = entry.k_nr || "–";
   if (fylkeEl) fylkeEl.textContent = entry.fylke || "–";
   if (soneEl) soneEl.textContent = entry.sone || "–";
