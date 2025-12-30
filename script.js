@@ -60,7 +60,29 @@ function settStatus(tekst, ok = true) {
       // forventer pris i øre/kWh
       prisEl.textContent = `${pris.toFixed(1)} øre/kWh`;
     }
-  }
+  }function oppdaterFelter(entry, pris) {
+    if (!entry) {
+        if (tettstedEl) tettstedEl.textContent = "";
+        if (prisEl) prisEl.textContent = "";
+        if (kNrEl) kNrEl.textContent = "";
+        if (fylkeEl) fylkeEl.textContent = "";
+        if (soneEl) soneEl.textContent = "";
+        return;
+    }
+
+    if (tettstedEl) tettstedEl.textContent = entry.tettsted || "–";
+    if (kNrEl) kNrEl.textContent = entry.k_nr || "–";
+    if (fylkeEl) fylkeEl.textContent = entry.fylke || "–";
+    if (soneEl) soneEl.textContent = entry.sone || "–";
+
+    if (prisEl) {
+        if (pris == null) {
+            prisEl.textContent = "–";
+        } else {
+            prisEl.textContent = `${pris.toFixed(1)} øre/kWh`;
+        }
+    }
+}
 
 // UTM32 → WGS84
 function utm32ToLatLon(northing, easting) {
@@ -91,7 +113,8 @@ async function lastTettsteder() {
     } catch (error) {
         console.error("Feil ved lasting av tettsteder:", error);
     }
-} // ← denne avslutter hele funksjonen
+}
+
 
 // --------------------------
 // Strømpris (tilpass API ved behov)
