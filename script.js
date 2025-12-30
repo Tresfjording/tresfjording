@@ -42,7 +42,7 @@ function settStatus(tekst, ok = true) {
         if (soneEl) soneEl.textContent = "";
         return;
     }
-
+  }
   if (tettstedEl) tettstedEl.textContent = entry.tettsted || "–";
   if (kNrEl) kNrEl.textContent = entry.k_nr || "–";
   if (fylkeEl) fylkeEl.textContent = entry.fylke || "–";
