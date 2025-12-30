@@ -354,6 +354,10 @@ async function visTettsted(map) {
  document.addEventListener("DOMContentLoaded", async () => {
   map = L.map("map").setView([62.566, 7.0], 7);
 
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "© OpenStreetMap contributors"
+  }).addTo(map);
+
   // Last lokal tettstedsliste
   await lastTettsteder();
 
@@ -365,7 +369,6 @@ async function visTettsted(map) {
     return;
   }
 
-  // Koble søk til visTettsted (ALT A)
   visInfoBtn.addEventListener("click", () => visTettsted(map));
   sokInput.addEventListener("keyup", e => {
     if (e.key === "Enter") visTettsted(map);
