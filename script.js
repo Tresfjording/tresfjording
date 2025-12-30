@@ -16,6 +16,7 @@ const tettstedEl = document.getElementById("tettstedDisplay");
 const prisEl = document.getElementById("prisDisplay");
 const kNrEl = document.getElementById("kNrDisplay");
 const fylkeEl = document.getElementById("fylkeDisplay");
+const tettstedEl2 = document.getElementById("tettstedDisplay2");
 
 // --------------------------
 // Hjelpefunksjoner
