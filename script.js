@@ -16,6 +16,7 @@ const tettstedEl = document.getElementById("tettstedDisplay");
 const prisEl = document.getElementById("prisDisplay");
 const kNrEl = document.getElementById("kNrDisplay");
 const fylkeEl = document.getElementById("fylkeDisplay");
+const soneEl = document.getElementById("soneDisplay");
 const tettstedEl2 = document.getElementById("tettstedDisplay2");
 
 // --------------------------
@@ -34,21 +35,22 @@ function settStatus(tekst, ok = true) {
   const el = document.getElementById("status");
   if (!el) return;
   el.textContent = tekst;
-  el.classList.toggle("ok", ok);
-  el.classList.toggle("feil", !ok);
+  el.classList.toggle("status-ok", ok);
+  el.classList.toggle("status-error", !ok);
 }
 
 // Oppdater infoboks
- function oppdaterFelter(entry, pris) {
-    if (!entry) {
-        if (tettstedEl) tettstedEl.textContent = "";
-        if (prisEl) prisEl.textContent = "";
-        if (kNrEl) kNrEl.textContent = "";
-        if (fylkeEl) fylkeEl.textContent = "";
-        if (soneEl) soneEl.textContent = "";
-        return;
-    }
- }
+function oppdaterFelter(entry, pris) {
+  if (!entry) {
+    if (tettstedEl) tettstedEl.textContent = "–";
+    if (tettstedEl2) tettstedEl2.textContent = "–";
+    if (prisEl) prisEl.textContent = "–";
+    if (kNrEl) kNrEl.textContent = "–";
+    if (fylkeEl) fylkeEl.textContent = "–";
+    if (soneEl) soneEl.textContent = "–";
+    return;
+  }
+
   if (tettstedEl) tettstedEl.textContent = entry.tettsted || "–";
   if (tettstedEl2) tettstedEl2.textContent = entry.tettsted || "–";
   if (kNrEl) kNrEl.textContent = entry.k_nr || "–";
@@ -63,7 +65,7 @@ function settStatus(tekst, ok = true) {
       prisEl.textContent = `${pris.toFixed(1)} øre/kWh`;
     }
   }
-  
+}
   
 
 // UTM32 → WGS84
@@ -104,20 +106,31 @@ async function lastTettsteder() {
 async function hentSpotpris(sone) {
   if (!sone) return null;
 
+  const soneKey = String(sone).trim().toUpperCase();
+  const soneTilSide = {
+    NO1: "oslo",
+    NO2: "kristiansand",
+    NO3: "trondheim",
+    NO4: "tromso",
+    NO5: "bergen"
+  };
+
+  const side = soneTilSide[soneKey];
+  if (!side) return null;
+
   try {
-    // EKSEMPEL – tilpass til ditt faktiske API
-    // Her bruker vi hvakosterstrommen.no sin nåværende time:
-    const url = `https://www.hvakosterstrommen.no/api/v1/prices/current_hour_${sone}.json`;
+    const url = `https://www.hvakosterstrommen.no/i/${side}`;
     const resp = await fetch(url);
-    if (!resp.ok) throw new Error("Klarte ikke hente spotpris");
-    const data = await resp.json();
+    if (!resp.ok) throw new Error(`Klarte ikke hente pris-side for ${soneKey}`);
 
-    // Flere API-varianter finnes; her antar vi data[0].NOK_per_kWh
-    const first = Array.isArray(data) ? data[0] : null;
-    if (!first || typeof first.NOK_per_kWh !== "number") return null;
+    const html = await resp.text();
+    const match = html.match(/(\d+[.,]\d+)\s*kr(?:\s*\/\s*kWh)?/i);
+    if (!match) return null;
 
-    // konverter kr/kWh → øre/kWh
-    return first.NOK_per_kWh * 100;
+    const krPerKwh = Number.parseFloat(match[1].replace(",", "."));
+    if (Number.isNaN(krPerKwh)) return null;
+
+    return krPerKwh * 100;
   } catch (err) {
     console.error("Feil ved henting av spotpris:", err);
     return null;
