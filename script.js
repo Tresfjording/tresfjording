@@ -80,23 +80,45 @@ function utm32ToLatLon(northing, easting) {
 // Data: tettsteder + sonekart
 // --------------------------
 async function lastTettsteder() {
+  const candidates = [
+    "data/tettsteder_norge.json",
+    "tettsteder_3.json",
+    "tettsteder.json",
+    "kommuner_tettsteder_csv_json_26_12_2025 (1).json"
+  ];
+
+  for (const candidate of candidates) {
     try {
-        const resp = await fetch("tettsteder_3.json");
-        if (!resp.ok) throw new Error("Klarte ikke laste tettsteder_3.json");
-        const data = await resp.json();
+      const resp = await fetch(candidate, { cache: "no-store" });
+      if (!resp.ok) {
+        console.warn(`Kunne ikke laste ${candidate}: HTTP ${resp.status}`);
+        continue;
+      }
 
-        if (!Array.isArray(data)) {
-            throw new Error("tettsteder_3.json har feil format");
-        }
-      
-        steder = data;
+      const data = await resp.json();
+      if (!Array.isArray(data)) {
+        throw new Error(`${candidate} har feil format`);
+      }
 
-        // bygg kommune -> sone-oppslag
-        kommuneTilSone = {};
-        // ... eventuelt mer logikk her
+      steder = data;
+      kommuneTilSone = {};
+
+      for (const entry of data) {
+        const key = String(entry?.k_nr ?? "").trim();
+        if (!key || !entry?.sone) continue;
+        kommuneTilSone[key] = entry.sone;
+      }
+
+      console.log(`Lastet tettsteder fra ${candidate}:`, data.length, "poster");
+      return data;
     } catch (error) {
-        console.error("Feil ved lasting av tettsteder:", error);
+      console.warn(`Feilet ved lasting av ${candidate}:`, error.message || error);
     }
+  }
+
+  console.error("Feil ved lasting av tettsteder: fant ingen gyldig datasett.");
+  settStatus("Klarte ikke laste tettstedsliste. Prøv igjen senere.", false);
+  return [];
 }
 
 
